@@ -19,10 +19,10 @@ data class Obat(
 )
 
 val daftarKeluhan = listOf(
-    Keluhan(1, "Demam & Nyeri", Icons.Default.Thermometer),
+    Keluhan(1, "Demam & Nyeri", Icons.Default.Sick),
     Keluhan(2, "Batuk & Pilek", Icons.Default.LocalHospital),
     Keluhan(3, "Maag & Asam Lambung", Icons.Default.LocalDrink),
-    Keluhan(4, "Alergi Gatal", Icons.Default.Allergies)
+    Keluhan(4, "Alergi Gatal", Icons.Default.CrisisAlert)
 )
 
 val daftarObat = listOf(
