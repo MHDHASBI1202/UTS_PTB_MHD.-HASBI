@@ -40,22 +40,18 @@ fun AppNavHost() {
     NavHost(
         navController = navController,
         startDestination = "home",
-        // Terapkan Animasi Transisi
         modifier = Modifier.fillMaxSize(),
-        enterTransition = { slideInHorizontally(initialOffsetX = { 1000 }) }, // Layar baru masuk dari kanan
-        exitTransition = { slideOutHorizontally(targetOffsetX = { -1000 }) } // Layar lama keluar ke kiri
+        enterTransition = { slideInHorizontally(initialOffsetX = { 1000 }) },
+        exitTransition = { slideOutHorizontally(targetOffsetX = { -1000 }) }
     ) {
-        // Rute "home" memanggil MainScreen
         composable("home") {
             MainScreen(navController = navController)
         }
 
-        // Rute "detail/{keluhanId}" memanggil DetailScreen
         composable(
             route = "detail/{keluhanId}",
             arguments = listOf(navArgument("keluhanId") { type = NavType.IntType })
         ) { backStackEntry ->
-            // Mengambil ID yang dikirim dari layar sebelumnya
             val keluhanId = backStackEntry.arguments?.getInt("keluhanId") ?: -1
             DetailScreen(
                 navController = navController,

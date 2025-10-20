@@ -29,7 +29,6 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun KeluhanItem(keluhan: Keluhan, onClick: () -> Unit) {
-    // Implementasi Animasi Press (Scale Animation)
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed = interactionSource.collectIsPressedAsState().value
     val scale = animateFloatAsState(if (isPressed) 0.96f else 1f, label = "scale_animation").value
@@ -77,7 +76,6 @@ fun ObatItem(obat: Obat) {
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
-            // NAMA PRODUK (Mudah dipahami pasien)
             Text(
                 text = obat.namaProduk,
                 style = MaterialTheme.typography.titleLarge,
@@ -85,7 +83,6 @@ fun ObatItem(obat: Obat) {
             )
             Spacer(modifier = Modifier.height(4.dp))
 
-            // KANDUNGAN UTAMA (Informasi Apoteker)
             Text(
                 text = "Kandungan: ${obat.kandunganUtama}",
                 style = MaterialTheme.typography.bodyMedium,
@@ -97,7 +94,6 @@ fun ObatItem(obat: Obat) {
                 color = DividerDefaults.color
             )
 
-            // FAKTA MENARIK
             Text(
                 text = "💡 Fakta: ${obat.faktaMenarik}",
                 style = MaterialTheme.typography.bodySmall,
@@ -105,7 +101,6 @@ fun ObatItem(obat: Obat) {
             )
             Spacer(modifier = Modifier.height(8.dp))
 
-            // DESKRIPSI SINGKAT
             Text(
                 text = "Aturan Pakai: ${obat.deskripsiSingkat}",
                 style = MaterialTheme.typography.bodyMedium
@@ -123,19 +118,14 @@ fun MainScreen(navController: NavController) {
 
     val daftarFakta = remember { daftarFaktaMedis.shuffled() }
 
-    // State untuk melacak indeks fakta yang sedang ditampilkan
     var currentFactIndex by remember { mutableIntStateOf(0) }
 
-    // Efek samping yang akan dijalankan ketika composable pertama kali masuk komposisi
     LaunchedEffect(Unit) {
-        // Loop tak terbatas untuk rotasi
         while (true) {
             delay(5000)
-
             currentFactIndex = (currentFactIndex + 1) % daftarFakta.size
         }
     }
-
 
     Scaffold(
         topBar = {
@@ -161,7 +151,7 @@ fun MainScreen(navController: NavController) {
                     scope.launch {
                         snackbarHostState.showSnackbar(
                             message = "Aplikasi Med-Info v1.0, Dibuat dengan Jetpack Compose." +
-                                    "Dibuat oleh MHD. HASBI (2311522032)",
+                                    "\nOleh MHD. HASBI (2311522032)",
                             actionLabel = "Tutup",
                             duration = SnackbarDuration.Short
                         )
@@ -181,7 +171,6 @@ fun MainScreen(navController: NavController) {
                 .background(MaterialTheme.colorScheme.background)
         ) {
             item {
-                // Banner/Header Fakta Medis - Mengambil fakta dari state yang dirotasi
                 Text(
                     text = daftarFakta[currentFactIndex],
                     style = MaterialTheme.typography.bodyMedium,
@@ -204,7 +193,6 @@ fun MainScreen(navController: NavController) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(navController: NavController, keluhanId: Int) {
-    // 1. Filter Data Berdasarkan ID yang Diterima
     val keluhan = daftarKeluhan.find { it.id == keluhanId }
     val obatList = daftarObat.filter { it.keluhanId == keluhanId }
 
@@ -213,7 +201,7 @@ fun DetailScreen(navController: NavController, keluhanId: Int) {
             TopAppBar(
                 title = { Text(keluhan?.nama ?: "Detail", color = MaterialTheme.colorScheme.onPrimary) },
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) { // Tombol Kembali
+                    IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Kembali", tint = MaterialTheme.colorScheme.onPrimary)
                     }
                 },
