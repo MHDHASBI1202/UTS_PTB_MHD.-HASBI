@@ -1,11 +1,11 @@
 package com.example.med_info.screen
 
-import androidx.compose.animation.core.animateFloatAsState // Tambah Import
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource // Tambah Import
-import androidx.compose.foundation.interaction.collectIsPressedAsState // Tambah Import
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,20 +13,19 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.* import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale // Tambah Import
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.med_info.data.Keluhan
 import com.example.med_info.data.Obat
 import com.example.med_info.data.daftarKeluhan
 import com.example.med_info.data.daftarObat
+import com.example.med_info.data.daftarFaktaMedis
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.remember
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 
 @Composable
 fun KeluhanItem(keluhan: Keluhan, onClick: () -> Unit) {
@@ -39,11 +38,11 @@ fun KeluhanItem(keluhan: Keluhan, onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
-            .scale(scale) // Terapkan Scale Animation saat ditekan
+            .scale(scale)
             .clickable(
                 onClick = onClick,
                 interactionSource = interactionSource,
-                indication = LocalIndication.current // Biarkan ripple bawaan tetap ada
+                indication = LocalIndication.current
             ),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
@@ -118,38 +117,51 @@ fun ObatItem(obat: Obat) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(navController: NavController) {
-    // 1. Deklarasi State untuk Snackbar
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    // ... data dummy bisa diletakkan di sini atau di Data.kt
+
+    val daftarFakta = remember { daftarFaktaMedis.shuffled() }
+
+    // State untuk melacak indeks fakta yang sedang ditampilkan
+    var currentFactIndex by remember { mutableIntStateOf(0) }
+
+    // Efek samping yang akan dijalankan ketika composable pertama kali masuk komposisi
+    LaunchedEffect(Unit) {
+        // Loop tak terbatas untuk rotasi
+        while (true) {
+            delay(5000)
+
+            currentFactIndex = (currentFactIndex + 1) % daftarFakta.size
+        }
+    }
+
 
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "Med-Info", // Judul Aplikasi
+                        text = "Med-Info",
                         style = MaterialTheme.typography.headlineSmall,
-                        color = MaterialTheme.colorScheme.onPrimary // Warna teks sesuai tema
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary // Warna background Top Bar
+                    containerColor = MaterialTheme.colorScheme.primary
                 )
             )
         },
-        // 2. Tambahkan Snackbar Host
+
         snackbarHost = { SnackbarHost(snackbarHostState) },
 
-        // 3. Tambahkan Floating Action Button (FAB)
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    // Tampilkan Snackbar saat FAB diklik
                     scope.launch {
                         snackbarHostState.showSnackbar(
-                            message = "Aplikasi Med-Info v1.0, Dibuat dengan Jetpack Compose.",
+                            message = "Aplikasi Med-Info v1.0, Dibuat dengan Jetpack Compose." +
+                                    "Dibuat oleh MHD. HASBI (2311522032)",
                             actionLabel = "Tutup",
                             duration = SnackbarDuration.Short
                         )
@@ -162,16 +174,16 @@ fun MainScreen(navController: NavController) {
             }
         }
     ) { padding ->
-        LazyColumn( // <<< Menampilkan Daftar Data menggunakan LazyColumn
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
                 .background(MaterialTheme.colorScheme.background)
         ) {
             item {
-                // Banner/Header Fakta Medis
+                // Banner/Header Fakta Medis - Mengambil fakta dari state yang dirotasi
                 Text(
-                    text = "Fakta Medis Hari Ini: Ibuprofen lebih baik untuk nyeri otot daripada Paracetamol!",
+                    text = daftarFakta[currentFactIndex],
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -182,7 +194,6 @@ fun MainScreen(navController: NavController) {
             }
             items(daftarKeluhan) { keluhan ->
                 KeluhanItem(keluhan = keluhan) {
-                    // <<< Navigasi Antar Layar & Pengiriman Data
                     navController.navigate("detail/${keluhan.id}")
                 }
             }

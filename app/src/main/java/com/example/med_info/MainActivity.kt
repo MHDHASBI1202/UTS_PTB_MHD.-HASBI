@@ -9,6 +9,7 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,10 +18,6 @@ import androidx.navigation.navArgument
 import com.example.med_info.screen.DetailScreen
 import com.example.med_info.screen.MainScreen
 import com.example.med_info.ui.theme.MedInfoTheme
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
