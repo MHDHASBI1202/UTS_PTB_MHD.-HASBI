@@ -22,7 +22,9 @@ val daftarKeluhan = listOf(
     Keluhan(1, "Demam & Nyeri", Icons.Default.Sick),
     Keluhan(2, "Batuk & Pilek", Icons.Default.LocalHospital),
     Keluhan(3, "Maag & Asam Lambung", Icons.Default.LocalDrink),
-    Keluhan(4, "Alergi Gatal", Icons.Default.CrisisAlert)
+    Keluhan(4, "Alergi Gatal", Icons.Default.CrisisAlert),
+    Keluhan(5, "Sakit Gigi", Icons.Default.Healing), // Kategori Baru
+    Keluhan(6, "Luka Luar", Icons.Default.LocalPharmacy) // Kategori Baru
 )
 
 val daftarObat = listOf(
@@ -40,5 +42,13 @@ val daftarObat = listOf(
 
     // KELUHAN ID 4: Alergi Gatal
     Obat("CTM", 4, "Chlorphenamine Maleate (CTM)", "Antihistamin generasi pertama. Sangat efektif untuk gatal, menyebabkan kantuk kuat.", "CTM adalah salah satu obat alergi tertua yang masih sering digunakan."),
-    Obat("Loratadine (Generik)", 4, "Loratadine", "Antihistamin non-sedatif. Tidak menyebabkan kantuk. 1 tab sehari.", "Generasi kedua antihistamin minim efek samping mengantuk.")
+    Obat("Loratadine (Generik)", 4, "Loratadine", "Antihistamin non-sedatif. Tidak menyebabkan kantuk. 1 tab sehari.", "Generasi kedua antihistamin minim efek samping mengantuk."),
+
+    // KELUHAN ID 5: Sakit Gigi (New Data)
+    Obat("Asam Mefenamat", 5, "Asam Mefenamat", "Minum 1 tablet 3 kali sehari setelah makan. Obat pereda nyeri yang kuat.", "Obat ini termasuk NSAID dan harus digunakan dengan hati-hati pada pasien maag."),
+    Obat("Eugenia Oil (Clove Oil)", 5, "Minyak Cengkeh", "Oleskan pada kapas dan tempelkan pada gigi yang sakit. Pengobatan tradisional.", "Minyak cengkeh mengandung eugenol, antiseptik dan anestesi alami."),
+
+    // KELUHAN ID 6: Luka Luar (New Data)
+    Obat("Povidone-Iodine", 6, "Povidone-Iodine 10%", "Bersihkan luka dan oleskan antiseptik ini 2-3 kali sehari.", "Antiseptik ini efektif membunuh bakteri, jamur, dan virus pada luka."),
+    Obat("Salep Bioplacenton", 6, "Ekstrak Plasenta, Neomycin Sulfate", "Dioleskan pada luka bakar ringan untuk membantu regenerasi kulit.", "Ekstrak plasenta berfungsi mempercepat penyembuhan dan mengurangi bekas luka.")
 )

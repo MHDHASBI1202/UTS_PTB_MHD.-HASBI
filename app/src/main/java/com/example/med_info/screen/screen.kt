@@ -1,7 +1,11 @@
 package com.example.med_info.screen
 
+import androidx.compose.animation.core.animateFloatAsState // Tambah Import
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource // Tambah Import
+import androidx.compose.foundation.interaction.collectIsPressedAsState // Tambah Import
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -12,6 +16,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale // Tambah Import
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.med_info.data.Keluhan
@@ -25,11 +30,21 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun KeluhanItem(keluhan: Keluhan, onClick: () -> Unit) {
+    // Implementasi Animasi Press (Scale Animation)
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed = interactionSource.collectIsPressedAsState().value
+    val scale = animateFloatAsState(if (isPressed) 0.96f else 1f, label = "scale_animation").value
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
-            .clickable(onClick = onClick), // <<< Animasi Klik (Ripple Effect)
+            .scale(scale) // Terapkan Scale Animation saat ditekan
+            .clickable(
+                onClick = onClick,
+                interactionSource = interactionSource,
+                indication = LocalIndication.current // Biarkan ripple bawaan tetap ada
+            ),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
@@ -111,7 +126,18 @@ fun MainScreen(navController: NavController) {
 
     Scaffold(
         topBar = {
-            // ... (TopAppBar yang sudah ada)
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(
+                        text = "Med-Info", // Judul Aplikasi
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.onPrimary // Warna teks sesuai tema
+                    )
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary // Warna background Top Bar
+                )
+            )
         },
         // 2. Tambahkan Snackbar Host
         snackbarHost = { SnackbarHost(snackbarHostState) },
